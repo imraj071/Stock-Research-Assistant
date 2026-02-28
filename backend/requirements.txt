@@ -1,0 +1,41 @@
+#My WebFramework
+fastapi==0.115.0
+
+# the ASGI server that actually runs FastAPI. The [standard] extra includes uvloop and httptools which make it significantly faster than the minimal install.
+uvicorn[standard]==0.30.6
+
+#ORM for database interactions. The [asyncio] extra enables async engine support which is mandatory since we're building a fully async backend.
+sqlalchemy[asyncio]==2.0.35
+
+#the async PostgreSQL driver. SQLAlchemy doesn't talk to Postgres directly — it needs a driver underneath. asyncpg is the fastest async option available.
+asyncpg==0.29.0
+
+#database migration tool. Every schema change gets tracked as a migration file. This is how you evolve your database schema without dropping and recreating tables.
+alembic==1.13.2
+
+#manages your config from .env file with type validation. If POSTGRES_PORT is missing or not an integer, it fails loudly at startup rather than silently at runtime.
+pydantic-settings==2.5.2
+
+#structured logging. Instead of plain text logs like "Server started", you get JSON like {"event": "server_started", "env": "development", "timestamp": "..."}. Searchable, parseable, production-grade.
+structlog==24.4.0
+
+#Python Redis client for APScheduler state persistence later.
+redis==5.0.8
+
+# JWT token creation and verification. Used  for auth.
+python-jose[cryptography]==3.3.0
+
+#password hashing. Never store plain text passwords. bcrypt is the industry standard.
+passlib[bcrypt]==1.7.4
+
+# rate limiting middleware for FastAPI. Protects your AI endpoints from being hammered.
+slowapi==0.1.9
+
+# testing framework.
+pytest==8.3.3
+
+#allows pytest to run async test functions. Without this, async tests simply don't work.
+pytest-asyncio==0.24.0
+
+#async HTTP client used in tests to make requests to your FastAPI app without spinning up a real server.
+httpx==0.27.2
