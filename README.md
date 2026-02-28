@@ -16,21 +16,21 @@ Built with a focus on **observability, reliability, and correctness** over surfa
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        React Frontend                        │
-│           TypeScript · TanStack Query · Tailwind CSS         │
-│              SSE Streaming · LangSmith Trace View            │
+│                        React Frontend                       │
+│           TypeScript · TanStack Query · Tailwind CSS        │
+│              SSE Streaming · LangSmith Trace View           │
 └─────────────────────┬───────────────────────────────────────┘
                       │ HTTP / SSE
 ┌─────────────────────▼───────────────────────────────────────┐
-│                      FastAPI Backend                         │
-│         Async SQLAlchemy · JWT Auth · slowapi                │
-│              APScheduler · structlog · Alembic               │
+│                      FastAPI Backend                        │
+│         Async SQLAlchemy · JWT Auth · slowapi               │
+│              APScheduler · structlog · Alembic              │
 └──────┬──────────────┬──────────────────┬────────────────────┘
        │              │                  │
 ┌──────▼──────┐ ┌─────▼──────┐ ┌────────▼───────┐
-│  PostgreSQL  │ │   Redis    │ │  LangGraph     │
-│  + pgvector  │ │            │ │  Agent Layer   │
-│  BM25 Search │ │            │ │  + LangSmith   │
+│  PostgreSQL │ │   Redis    │ │  LangGraph     │
+│  + pgvector │ │            │ │  Agent Layer   │
+│  BM25 Search│ │            │ │  + LangSmith   │
 └─────────────┘ └────────────┘ └────────────────┘
 ```
 
@@ -245,10 +245,5 @@ npx playwright test --reporter=html
 
 ---
 
-## 📄 License
-
-MIT License — see [LICENSE](LICENSE) for details.
-
----
 
 <p align="center">Built with precision. Grounded in real data. Designed for production.</p>
