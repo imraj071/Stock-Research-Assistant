@@ -56,7 +56,9 @@ langchain-openai==0.2.14
 langgraph==0.2.39
 langsmith==0.1.129
 cohere==5.11.0
-
+sentence_transformers
 pgvector
 
 requests==2.32.3
+
+cohere
