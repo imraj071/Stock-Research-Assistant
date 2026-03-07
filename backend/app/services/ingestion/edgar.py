@@ -114,10 +114,11 @@ async def fetch_filing_text(
 ) -> str | None:
     clean_accession = accession_number.replace("-", "")
     url = (
-        f"{EDGAR_BASE_URL}/Archives/edgar/full-index/"
-        f"Archives/edgar/data/{int(cik)}/"
+        f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/"
         f"{clean_accession}/{primary_document}"
     )
+
+    logger.info("fetching_filing_text", url=url)
 
     async with httpx.AsyncClient(headers=HEADERS, timeout=60.0) as client:
         try:

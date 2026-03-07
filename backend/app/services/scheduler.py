@@ -9,7 +9,7 @@ from app.db.session import AsyncSessionLocal
 from app.services.ingestion.edgar import ingest_filings_for_ticker
 from app.services.ingestion.yfinance_service import ingest_price_data_for_ticker
 from app.services.ingestion.news_service import ingest_news_for_ticker
-
+from app.services.rag.embeddings import process_unprocessed_filings
 
 def create_scheduler() -> AsyncIOScheduler:
     jobstores = {
@@ -134,4 +134,30 @@ def register_jobs(scheduler: AsyncIOScheduler) -> None:
         replace_existing=True,
     )
 
-    logger.info("scheduler_jobs_registered", job_count=3)
+    scheduler.add_job(
+        job_embed_unprocessed_filings,
+        trigger="interval",
+        hours=1,
+        id="embed_unprocessed_filings",
+        replace_existing=True,
+    )
+
+    logger.info("scheduler_jobs_registered", job_count=4)
+
+async def job_embed_unprocessed_filings() -> None:
+    logger.info("scheduled_job_started", job="embed_filings")
+    async with AsyncSessionLocal() as db:
+        try:
+            result = await process_unprocessed_filings(db)
+            logger.info(
+                "scheduled_job_complete",
+                job="embed_filings",
+                filings_processed=result["total_filings"],
+                chunks_created=result["total_chunks"],
+            )
+        except Exception as e:
+            logger.error(
+                "scheduled_job_failed",
+                job="embed_filings",
+                error=str(e)
+            )

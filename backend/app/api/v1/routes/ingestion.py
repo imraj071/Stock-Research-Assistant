@@ -16,6 +16,9 @@ from app.services.ingestion.edgar import ingest_filings_for_ticker
 from app.services.ingestion.yfinance_service import ingest_price_data_for_ticker
 from app.services.ingestion.news_service import ingest_news_for_ticker
 from app.core.logging import logger
+from app.services.rag.embeddings import process_unprocessed_filings
+from app.services.rag.retrieval import hybrid_search
+from app.services.rag.pipeline import retrieve_relevant_chunks
 
 router = APIRouter()
 
@@ -121,3 +124,62 @@ async def list_tickers(
     result = await db.execute(select(Ticker).order_by(Ticker.symbol))
     tickers = result.scalars().all()
     return [TickerResponse.model_validate(t) for t in tickers]
+
+
+@router.post("/embed")
+async def trigger_embedding(
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    logger.info("manual_embedding_triggered")
+    result = await process_unprocessed_filings(db)
+    return result
+
+@router.get("/search")
+async def search_filings(
+    query: str,
+    ticker_id: int | None = None,
+    top_k: int = 10,
+    db: AsyncSession = Depends(get_db),
+) -> list[dict]:
+    results = await hybrid_search(
+        db=db,
+        query=query,
+        top_k=top_k,
+        ticker_id=ticker_id,
+    )
+    return [
+        {
+            "chunk_id": r.chunk_id,
+            "filing_id": r.filing_id,
+            "content_preview": r.content[:200],
+            "rrf_score": r.rrf_score,
+            "vector_rank": r.vector_rank,
+            "bm25_rank": r.bm25_rank,
+        }
+        for r in results
+    ]
+
+@router.get("/retrieve")
+async def retrieve_chunks(
+    query: str,
+    ticker_id: int | None = None,
+    top_k: int = 5,
+    db: AsyncSession = Depends(get_db),
+) -> list[dict]:
+    results = await retrieve_relevant_chunks(
+        db=db,
+        query=query,
+        ticker_id=ticker_id,
+        final_top_k=top_k,
+    )
+    return [
+        {
+            "chunk_id": r.chunk_id,
+            "filing_id": r.filing_id,
+            "content_preview": r.content[:300],
+            "rrf_score": r.rrf_score,
+            "vector_rank": r.vector_rank,
+            "bm25_rank": r.bm25_rank,
+        }
+        for r in results
+    ]
