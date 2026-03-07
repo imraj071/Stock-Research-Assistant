@@ -22,6 +22,9 @@ structlog==24.4.0
 #Python Redis client for APScheduler state persistence later.
 redis==5.0.8
 
+#the scheduler that will run periodic ingestion jobs. Pulls new filings and news automatically without you manually triggering anything.
+apscheduler[redis]==3.10.4
+
 # JWT token creation and verification. Used  for auth.
 python-jose[cryptography]==3.3.0
 
@@ -31,11 +34,29 @@ passlib[bcrypt]==1.7.4
 # rate limiting middleware for FastAPI. Protects your AI endpoints from being hammered.
 slowapi==0.1.9
 
+#Yahoo Finance wrapper. Gives you price history, fundamentals, company info for any publicly traded ticker. No API key required which is why we chose it
+#yfinance==0.2.51
+
+# official NewsAPI Python client. Cleaner than raw HTTP requests against their API.
+newsapi-python==0.2.7
+
+#async HTTP client. SEC EDGAR has no official Python client so we'll hit their REST API directly with httpx. Already existed in requirements but now it's doing real work.
+httpx==0.27.2
+
 # testing framework.
 pytest==8.3.3
 
 #allows pytest to run async test functions. Without this, async tests simply don't work.
 pytest-asyncio==0.24.0
 
-#async HTTP client used in tests to make requests to your FastAPI app without spinning up a real server.
-httpx==0.27.2
+# AI & RAG (added now, used in Phase 3+)
+openai==1.58.1
+langchain==0.3.7
+langchain-openai==0.2.14
+langgraph==0.2.39
+langsmith==0.1.129
+cohere==5.11.0
+
+pgvector
+
+requests==2.32.3
