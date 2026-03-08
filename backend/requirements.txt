@@ -30,6 +30,7 @@ python-jose[cryptography]==3.3.0
 
 #password hashing. Never store plain text passwords. bcrypt is the industry standard.
 passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
 
 # rate limiting middleware for FastAPI. Protects your AI endpoints from being hammered.
 slowapi==0.1.9
@@ -62,3 +63,10 @@ pgvector
 requests==2.32.3
 
 cohere
+
+langchain_core
+langgraph
+
+langchain-groq==0.2.3
+
+email-validator==2.2.0
