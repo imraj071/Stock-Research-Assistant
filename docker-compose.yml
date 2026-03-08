@@ -34,6 +34,9 @@ services:
     container_name: stock_backend
     env_file:
       - ./backend/.env
+    environment:
+      - LANGCHAIN_TRACING_V2=true
+      - LANGCHAIN_PROJECT=stock-research-assistant
     ports:
       - "8000:8000"
     depends_on:
