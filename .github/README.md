@@ -1,1 +1,0 @@
-![CI](https://github.com/imraj071/Stock-Research-Assistant/actions/workflows/ci.yml/badge.svg)
