@@ -61,9 +61,13 @@ jobs:
           GROQ_API_KEY: gsk_test_not_real
           COHERE_API_KEY: test-not-real
           NEWSAPI_KEY: test-not-real
+          NEWS_API_KEY: test-not-real
           LANGCHAIN_API_KEY: test-not-real
           LANGCHAIN_TRACING_V2: "false"
           LANGCHAIN_PROJECT: stock-research-assistant
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: stock_research_test
         run: |
           pytest tests/ -v --tb=short --cov=app --cov-report=term-missing --cov-report=xml
 
